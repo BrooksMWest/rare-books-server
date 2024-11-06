@@ -24,7 +24,7 @@ COMMENTS = [
 
 def get_all_comments():
     # Open a connection to the database
-    with sqlite3.connect("./kennel.sqlite3") as conn:
+    with sqlite3.connect("./loaddata.sqlite3") as conn:
 
         # Just use these. It's a Black Box.
         conn.row_factory = sqlite3.Row
@@ -59,7 +59,7 @@ def get_all_comments():
 
 # Function with a single parameter
 def get_single_comment(id):
-    with sqlite3.connect("./kennel.sqlite3") as conn:
+    with sqlite3.connect("./loaddata.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
@@ -84,18 +84,17 @@ def get_single_comment(id):
 
         return comment.__dict__
 
-def create_comment(new_commnet):
-    with sqlite3.connect("./kennel.sqlite3") as conn:
+def create_comment(new_comment):
+    with sqlite3.connect("./loaddata.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
         INSERT INTO Comment
-            ( author_id, author_id, post_id, content )
+            ( content )
         VALUES
-            ( ?, ?, ?, ?, ?);
-        """, (new_animal['name'], new_animal['breed'],
-              new_animal['status'], new_animal['locationId'],
-              new_animal['customerId'], ))
+            ( ? );
+        """, (new_comment['id'], new_comment['author_id'],
+              new_comment['post_id'], new_comment['content'] ))
 
         # The `lastrowid` property on the cursor will return
         # the primary key of the last thing that got added to
@@ -111,30 +110,24 @@ def create_comment(new_commnet):
     return new_comment
 
 def delete_comment(id):
-    with sqlite3.connect("./kennel.sqlite3") as conn:
+    with sqlite3.connect("./loaddata.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        DELETE FROM animal
+        DELETE FROM comment
         WHERE id = ?
         """, (id, ))
 
 def update_comment(id, new_comment):
-    with sqlite3.connect("./kennel.sqlite3") as conn:
+    with sqlite3.connect("./loaddata.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
         UPDATE Comment
             SET
-                name = ?,
-                breed = ?,
-                status = ?,
-                location_id = ?,
-                customer_id = ?
+                content = ?
         WHERE id = ?
-        """, (new_animal['name'], new_animal['breed'],
-              new_animal['status'], new_animal['locationId'],
-              new_animal['customerId'], id, ))
+        """, (new_comment['content'], id, ))
 
         # Were any rows affected?
         # Did the client send an `id` that exists?
@@ -147,59 +140,3 @@ def update_comment(id, new_comment):
     else:
         # Forces 204 response by main module
         return True
-
-def get_animal_by_location(location):
-
-    with sqlite3.connect("./kennel.sqlite3") as conn:
-        conn.row_factory = sqlite3.Row
-        db_cursor = conn.cursor()
-
-        # Write the SQL query to get the information you want
-        db_cursor.execute("""
-        SELECT
-            c.id,
-            c.name,
-            c.breed,
-            c.status,
-            c.location_id,
-            c.customer_id    
-        FROM animal c
-        WHERE c.location_id = ?
-        """, ( location, ))
-
-        animals = []
-        dataset = db_cursor.fetchall()
-
-        for row in dataset:
-            animal = Animal(row['id'], row['name'], row['breed'], row['status'] , row['location_id'], row['customer_id'])
-            animals.append(animal.__dict__)
-
-    return animals
-
-def get_animal_by_status(status):
-
-    with sqlite3.connect("./kennel.sqlite3") as conn:
-        conn.row_factory = sqlite3.Row
-        db_cursor = conn.cursor()
-
-        # Write the SQL query to get the information you want
-        db_cursor.execute("""
-        SELECT
-            c.id,
-            c.name,
-            c.breed,
-            c.status,
-            c.location_id,
-            c.customer_id    
-        FROM animal c
-        WHERE c.status = ?
-        """, ( status, ))
-
-        animals = []
-        dataset = db_cursor.fetchall()
-
-        for row in dataset:
-            animal = Animal(row['id'], row['name'], row['breed'], row['status'] , row['location_id'], row['customer_id'])
-            animals.append(animal.__dict__)
-
-    return animals
