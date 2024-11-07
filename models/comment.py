@@ -5,5 +5,3 @@ class Comment():
     self.author_id
     self.post_id
     self.content
-
-new_comment = Comment(1, 2, 3, "This book was the best thing I ever read")
