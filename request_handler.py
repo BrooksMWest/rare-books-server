@@ -4,7 +4,7 @@ from urllib.parse import urlparse, parse_qs
 from views.user import create_user, login_user
 
 # VIEWS IMPORTS
-from views import get_single_subscription, get_all_subscriptions
+from views import get_single_subscription, get_all_subscriptions, get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -73,6 +73,13 @@ class HandleRequests(BaseHTTPRequestHandler):
 
                 else:
                     response = get_all_subscriptions()
+
+            if resource == "comments":
+                if id is not None:
+                    response = get_single_comment()
+
+                else:
+                    response = get_all_comments()
                     
         self.wfile.write(json.dumps(response).encode())
 
@@ -90,15 +97,40 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == 'register':
             response = create_user(post_body)
 
-        self.wfile.write(response.encode())
+        # Initialize new oject of whatever type
+        new_object = None 
+
+        if resource == "comments":
+            new_object = create_comment(post_body)
+
+        if new_object:
+            self.wfile.write(json.dumps(new_object).encode())
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
-        pass
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+
+    # Parse the URL
+        (resource, id) = self.parse_url(self.path)
+
+    # Initialize success as False by default
+        success = False
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
-        pass
+    # Set a 204 response code
+        self._set_headers(204)
+
+    # Parse the URL
+        (resource, id) = self.parse_url(self.path)
+
+    # Delete a single animal from the list
+        if resource == "comments":
+            delete_comment(id)
+    # Encode the new item and send in response
+        self.wfile.write("".encode()) 
 
 
 def main():
