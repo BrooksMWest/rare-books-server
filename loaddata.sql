@@ -89,18 +89,11 @@ INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
 
+
+
 SELECT
     a.id,
     a.follower_id,
     a.author_id,
     a.created_on
-FROM subscriptions a
-
-SELECT * FROM subscriptions;
-
-INSERT INTO `Comments` VALUES (null, 1, 1, "This was the best book I ever read");
-INSERT INTO `Comments` VALUES (null, 2, 2, "I hated everything about tis stupid book.");
-INSERT INTO `Comments` VALUES (null, 3, 3, "I know why this book is rare. Nobody bought it.");
-INSERT INTO `Comments` VALUES (null, 4, 4, "Best book ever. Shame it's rare.");
-INSERT INTO `Comments` VALUES (null, 1, 5, "I don't think anyone has ever finished this book");
-INSERT INTO `Comments` VALUES (null, 2, 6, "Loved it. Five stars!");
+FROM Subscriptions a

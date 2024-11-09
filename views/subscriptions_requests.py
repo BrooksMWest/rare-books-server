@@ -18,7 +18,7 @@ def get_all_subscriptions():
             a.follower_id,
             a.author_id,
             a.created_on
-        FROM subscriptions a
+        FROM Subscriptions a
         """)
 
         # Initialize an empty list to hold all subscriptions representations
@@ -53,7 +53,7 @@ def get_single_subscription(id):
             a.follower_id,
             a.author_id,
             a.created_on
-        FROM subscriptions a
+        FROM Subscriptions a
         WHERE a.id = ?
         """, ( id, ))
 
@@ -64,3 +64,28 @@ def get_single_subscription(id):
         subscription = Subscriptions(data['id'], data['follower_id'], data['author_id'], data['created_on'])
 
         return subscription.__dict__
+    
+def create_subscription(sub):
+    with sqlite3.connect("./loaddata.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        INSERT INTO Subscriptions 
+            ( follower_id, author_id, created_on )
+        VALUES
+            ( ?, ?, ?);
+        """, (sub['follower_id'],
+              sub['author_id'], sub['created_on'], ))
+
+        # The `lastrowid` property on the cursor will return
+        # the primary key of the last thing that got added to
+        # the database.
+        id = db_cursor.lastrowid
+
+        # Add the `id` property to the animal dictionary that
+        # was sent by the client so that the client sees the
+        # primary key in the response.
+        sub['id'] = id
+
+
+    return sub
