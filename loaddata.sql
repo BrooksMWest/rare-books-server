@@ -97,5 +97,3 @@ SELECT
     a.author_id,
     a.created_on
 FROM Subscriptions a
-
-SELECT * FROM Subscriptions;
