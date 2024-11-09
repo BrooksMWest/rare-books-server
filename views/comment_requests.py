@@ -90,7 +90,7 @@ def create_comment(new_comment):
 
         db_cursor.execute("""
         INSERT INTO Comments
-            ( content )
+            ( author_id, post_id, content )
         VALUES
             ( ?, ?, ? );
         """, (new_comment['author_id'],

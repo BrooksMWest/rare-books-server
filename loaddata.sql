@@ -97,3 +97,10 @@ SELECT
     a.author_id,
     a.created_on
 FROM Subscriptions a
+
+SELECT
+            a.id,
+            a.author_id,
+            a.post_id,
+            a.content
+        FROM Comments a
