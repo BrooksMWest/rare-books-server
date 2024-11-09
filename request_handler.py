@@ -4,7 +4,7 @@ from urllib.parse import urlparse, parse_qs
 from views.user import create_user, login_user
 
 # VIEWS IMPORTS
-from views import get_single_subscription, get_all_subscriptions, get_all_comments, get_single_comment, delete_comment, update_comment, create_subscription
+from views import get_single_subscription, get_all_subscriptions, get_all_comments, get_single_comment, delete_comment, update_comment, create_comment, create_subscription
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -99,7 +99,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         # Parse the URL
         (resource, id) = self.parse_url(self.path)
 
-        # Initialize new animal/location/employee/customer
+        # Initialize new comment/subscription/post etc.
         new_object = None
 
         if resource == 'login':
@@ -108,6 +108,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == "Subscriptions":
             new_object = create_subscription(post_body)
+        if resource == "comments":
+            new_object == create_comment(post_body)
 
         # Initialize new oject of whatever type
         new_object = None 
@@ -126,6 +128,15 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     # Initialize success as False by default
         success = False
+
+        if resource == "comments":
+            success = update_comment(id, post_body)
+        
+         # Set appropriate headers based on success
+        if success:
+            self._set_headers(204)  # No Content for successful update
+        else:
+            self._set_headers(404)  # Not Found if the update fail
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
