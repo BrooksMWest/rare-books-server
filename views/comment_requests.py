@@ -36,8 +36,8 @@ def get_all_comments():
             a.id,
             a.author_id,
             a.post_id,
-            a.content,
-        FROM Comment a
+            a.content
+        FROM Comments a
         """)
 
         # Initialize an empty list to hold all animal representations
@@ -53,7 +53,7 @@ def get_all_comments():
             comment = Comment(row['id'], row['author_id'], row['post_id'], row['content'])
 
         # Add the dictionary representation of the animal to the list
-            comment.append(comment.__dict__)
+            comments.append(comment.__dict__)
 
     return comments
 
@@ -70,8 +70,8 @@ def get_single_comment(id):
             a.id,
             a.author_id,
             a.post_id,
-            a.content,
-        FROM comment a
+            a.content
+        FROM Comments a
         WHERE a.id = ?
         """, ( id, ))
 
@@ -89,11 +89,11 @@ def create_comment(new_comment):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO Comment
+        INSERT INTO Comments
             ( content )
         VALUES
-            ( ? );
-        """, (new_comment['id'], new_comment['author_id'],
+            ( ?, ?, ? );
+        """, (new_comment['author_id'],
               new_comment['post_id'], new_comment['content'] ))
 
         # The `lastrowid` property on the cursor will return
@@ -101,7 +101,7 @@ def create_comment(new_comment):
         # the database.
         id = db_cursor.lastrowid
 
-        # Add the `id` property to the animal dictionary that
+        # Add the `id` property to the comment dictionary that
         # was sent by the client so that the client sees the
         # primary key in the response.
         new_comment['id'] = id
@@ -114,7 +114,7 @@ def delete_comment(id):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        DELETE FROM comment
+        DELETE FROM Comments
         WHERE id = ?
         """, (id, ))
 
@@ -123,7 +123,7 @@ def update_comment(id, new_comment):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        UPDATE Comment
+        UPDATE Comments
             SET
                 content = ?
         WHERE id = ?

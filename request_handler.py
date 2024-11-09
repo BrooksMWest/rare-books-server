@@ -76,7 +76,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if resource == "comments":
                 if id is not None:
-                    response = get_single_comment()
+                    response = get_single_comment(id)
 
                 else:
                     response = get_all_comments()
