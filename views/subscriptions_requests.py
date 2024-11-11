@@ -89,3 +89,12 @@ def create_subscription(sub):
 
 
     return sub
+
+def delete_subscriber(id):
+    with sqlite3.connect("./loaddata.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM Subscriptions
+        WHERE id = ?
+        """, (id, ))
