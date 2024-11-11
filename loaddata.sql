@@ -33,14 +33,16 @@ CREATE TABLE "Subscriptions" (
 CREATE TABLE "Posts" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
   "user_id" INTEGER,
-  "category_id" INTEGER,
   "title" varchar,
   "publication_date" date,
   "image_url" varchar,
   "content" varchar,
-  "approved" bit,
-  FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`),
+  "approved" bit
+  -- FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`),
 );
+
+DROP TABLE IF EXISTS "Posts";
+
 
 CREATE TABLE "Comments" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -89,11 +91,34 @@ INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
 
+
+
+
+INSERT INTO `Posts` VALUES (null, 1, "The Future of AI", "2024-11-01", "https://example.com/image1.jpg", "A deep dive into the future advancements of artificial intelligence.", 1);
+INSERT INTO `Posts` VALUES (null, 2, "Top 10 Healthy Foods", "2024-10-30", "https://example.com/image2.jpg", "An article discussing the top 10 healthiest foods to incorporate into your diet.", 1);
+INSERT INTO `Posts` VALUES (null, 3, "Minimalism: The Art of Less", "2024-10-28", "https://example.com/image3.jpg", "How adopting minimalism can lead to a simpler, happier life.", 1);
+INSERT INTO `Posts` VALUES (null, 4, "The Rise of Women's Football", "2024-10-25", "https://example.com/image4.jpg", "A look at how women's football is gaining global popularity.", 1);
+INSERT INTO `Posts` VALUES (null, 5, "Top 5 Budget-Friendly Destinations", "2024-10-20", "https://example.com/image5.jpg", "Exploring the best travel destinations for those on a budget.", 0);
+INSERT INTO `Posts` VALUES (null, 6, "Vegan Recipes for Beginners", "2024-10-15", "https://example.com/image6.jpg", "A collection of simple and delicious vegan recipes to get started.", 1);
+INSERT INTO `Posts` VALUES (null, 7, "The Impact of 5G on Connectivity", "2024-10-10", "https://example.com/image7.jpg", "Exploring how 5G will revolutionize mobile connectivity around the world.", 1);
+INSERT INTO `Posts` VALUES (null, 8, "Yoga for Stress Relief", "2024-10-05", "https://example.com/image8.jpg", "How yoga can help alleviate stress and improve mental well-being.", 1);
+INSERT INTO `Posts` VALUES (null, 9, "The Benefits of Journaling", "2024-10-01", "https://example.com/image9.jpg", "Why journaling can improve mental clarity and help you achieve your goals.", 0);
+INSERT INTO `Posts` VALUES (null, 10, "The Evolution of Extreme Sports", "2024-09-28", "https://example.com/image10.jpg", "A history of extreme sports and their growing popularity.", 1);
+INSERT INTO `Posts` VALUES (null, 11, "Solo Travel Tips for First-Timers", "2024-09-22", "https://example.com/image11.jpg", "Advice for solo travelers looking to explore the world on their own.", 1);
+INSERT INTO `Posts` VALUES (null, 12, "How to Make the Perfect Coffee", "2024-09-20", "https://example.com/image12.jpg", "A guide to brewing the perfect cup of coffee every time.", 1);
+INSERT INTO `Posts` VALUES (null, 13, "Blockchain Beyond Cryptocurrency", "2024-09-18", "https://example.com/image13.jpg", "Exploring how blockchain technology is impacting industries beyond just finance.", 0);
+INSERT INTO `Posts` VALUES (null, 14, "Mental Health in the Workplace", "2024-09-15", "https://example.com/image14.jpg", "How employers can create a healthy mental environment for their employees.", 1);
+INSERT INTO `Posts` VALUES (null, 15, "Building a Successful Morning Routine", "2024-09-12", "https://example.com/image15.jpg", "How to structure your mornings for maximum productivity and focus.", 1);
+
+
+
+DELETE FROM `Posts` WHERE `id` IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+
+
+
 SELECT
     a.id,
-    a.follower_id,
-    a.author_id,
-    a.created_on
-FROM subscriptions a
+    a.title
+FROM posts a
 
-SELECT * FROM subscriptions;
+SELECT * FROM posts;

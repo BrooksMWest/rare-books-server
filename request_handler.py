@@ -1,10 +1,10 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from urllib.parse import urlparse, parse_qs
-from views.user import create_user, login_user
+from views.user_request import create_user, login_user
 
 # VIEWS IMPORTS
-from views import get_single_subscription, get_all_subscriptions, get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
+from views import get_single_subscription, get_all_subscriptions, get_all_comments, get_single_comment, delete_comment, update_comment, create_comment, create_subscription, get_all_posts, get_single_post, create_post, delete_post
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -67,7 +67,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             ( resource, id ) = parsed
 
             # It's an if..else statement
-            if resource == "subscriptions":
+            if resource == "Subscriptions":
                 if id is not None:
                     response = get_single_subscription(id)
 
@@ -76,32 +76,52 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if resource == "comments":
                 if id is not None:
-                    response = get_single_comment()
+                    response = get_single_comment(id)
 
                 else:
                     response = get_all_comments()
+                    
+            if resource == "posts":
+                if id is not None:
+                    response = get_single_post(id)
+
+                else:
+                    response = get_all_posts()       
                     
         self.wfile.write(json.dumps(response).encode())
 
 
     def do_POST(self):
-        """Make a post request to the server"""
+        """Handles POST requests to the server
+        """
+        # Set response code to 'Created'
         self._set_headers(201)
+
         content_len = int(self.headers.get('content-length', 0))
-        post_body = json.loads(self.rfile.read(content_len))
-        response = ''
-        resource, _ = self.parse_url()
+        post_body = self.rfile.read(content_len)
+
+        # Convert JSON string to a Python dictionary
+        post_body = json.loads(post_body)
+
+        # Parse the URL
+        (resource, id) = self.parse_url(self.path)
+
+        # Initialize new comment/subscription/post etc.
+        new_object = None
 
         if resource == 'login':
             response = login_user(post_body)
         if resource == 'register':
             response = create_user(post_body)
+        if resource == "Subscriptions":
+            new_object = create_subscription(post_body)
+        if resource == "comments":
+            new_object == create_comment(post_body)
+        if resource == "posts":
+            new_object == create_post(post_body)
 
         # Initialize new oject of whatever type
         new_object = None 
-
-        if resource == "comments":
-            new_object = create_comment(post_body)
 
         if new_object:
             self.wfile.write(json.dumps(new_object).encode())
@@ -118,6 +138,17 @@ class HandleRequests(BaseHTTPRequestHandler):
     # Initialize success as False by default
         success = False
 
+        if resource == "comments":
+            success = update_comment(id, post_body)
+        if resource == "posts":
+            success = update_comment(id, post_body)
+        
+         # Set appropriate headers based on success
+        if success:
+            self._set_headers(204)  # No Content for successful update
+        else:
+            self._set_headers(404)  # Not Found if the update fail
+
     def do_DELETE(self):
         """Handle DELETE Requests"""
     # Set a 204 response code
@@ -126,9 +157,12 @@ class HandleRequests(BaseHTTPRequestHandler):
     # Parse the URL
         (resource, id) = self.parse_url(self.path)
 
-    # Delete a single animal from the list
+    # Delete a comment from the list
         if resource == "comments":
             delete_comment(id)
+        if resource == "posts":
+            delete_post(id)
+            
     # Encode the new item and send in response
         self.wfile.write("".encode()) 
 
