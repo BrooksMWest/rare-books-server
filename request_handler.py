@@ -1,10 +1,10 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from urllib.parse import urlparse, parse_qs
-from views.user import create_user, login_user
+from views.users import create_user, login_user
 
 # VIEWS IMPORTS
-from views import get_single_subscription, get_all_subscriptions, get_all_comments, get_single_comment, delete_comment, update_comment, create_comment, create_subscription
+from views import get_single_subscription, get_all_subscriptions, get_all_comments, get_single_comment, delete_comment, update_comment, create_comment, create_subscription, delete_subscriber
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -145,11 +145,14 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     # Parse the URL
         (resource, id) = self.parse_url(self.path)
+        
+        if resource == "Subscriptions":
+            delete_subscriber(id)
 
     # Delete a comment from the list
         if resource == "comments":
             delete_comment(id)
-            
+             
     # Encode the new item and send in response
         self.wfile.write("".encode()) 
 
