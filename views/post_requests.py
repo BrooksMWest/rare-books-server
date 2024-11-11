@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from models import Post
+from models import Posts
 
 # Sample data (could be replaced with data from DB)
 POSTS = [
@@ -42,14 +42,14 @@ def get_all_posts():
 
         db_cursor.execute("""
         SELECT
-            id,
-            user_id,
-            title,
-            publication_date,
-            image_url,
-            content,
-            approved
-        FROM Post
+            a.id,
+            a.user_id,
+            a.title,
+            a.publication_date,
+            a.image_url,
+            a.content,
+            a.approved
+        FROM Posts a
         """)
 
         # Initialize an empty list to hold all post representations
@@ -60,10 +60,11 @@ def get_all_posts():
 
         # Iterate through dataset to build Post instances
         for row in dataset:
-            post = Post(row['id'], row['user_id'], row['title'], row['publication_date'], row['image_url'], row['content'], row['approved'])
-            posts.append(post.__dict__)  # Add each post to the list
+            post = Posts(row['id'], row['user_id'], row['title'], row['publication_date'], row['image_url'], row['content'], row['approved'])
+            posts.append(post.__dict__)  # Append the dictionary of the Post instance
 
     return posts
+
 
 
 def get_single_post(id):
@@ -74,15 +75,15 @@ def get_single_post(id):
 
         db_cursor.execute("""
         SELECT
-            id,
-            user_id,
-            title,
-            publication_date,
-            image_url,
-            content,
-            approved
-        FROM Post
-        WHERE id = ?
+            a.id,
+            a.user_id,
+            a.title,
+            a.publication_date,
+            a.image_url,
+            a.content,
+            a.approved
+        FROM Posts a
+        WHERE a.id = ?
         """, (id,))
 
         # Load the single result into memory
@@ -90,8 +91,8 @@ def get_single_post(id):
 
         # Create Post instance from the data
         if data:
-            post = Post(data['id'], data['user_id'], data['title'], data['publication_date'], data['image_url'], data['content'], data['approved'])
-            return post.__dict__  # Return the post dictionary representation
+            posts = Posts(data['id'], data['user_id'], data['title'], data['publication_date'], data['image_url'], data['content'], data['approved'])
+            return posts.__dict__  # Return the post dictionary representation
         else:
             return None  # If no post was found
 
@@ -102,7 +103,7 @@ def create_post(new_post):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO Post (user_id, title, publication_date, image_url, content, approved)
+        INSERT INTO Posts (user_id, title, publication_date, image_url, content, approved)
         VALUES (?, ?, ?, ?, ?, ?)
         """, (new_post['user_id'], new_post['title'], new_post['publication_date'], new_post['image_url'], new_post['content'], new_post['approved']))
 
@@ -118,7 +119,7 @@ def delete_post(id):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        DELETE FROM Post
+        DELETE FROM Posts
         WHERE id = ?
         """, (id,))
 
@@ -142,4 +143,10 @@ def update_post(id, updated_post):
         # Check if any rows were affected
         rows_affected = db_cursor.rowcount
 
-    return rows_affected > 0  # Return True if the post was updated, otherwise False
+  # return value of this function
+    if rows_affected == 0:
+        # Forces 404 response by main module
+        return False
+    else:
+        # Forces 204 response by main module
+        return True

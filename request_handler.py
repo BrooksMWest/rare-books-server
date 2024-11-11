@@ -1,10 +1,10 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from urllib.parse import urlparse, parse_qs
-from views.users import create_user, login_user
+from views.user_request import create_user, login_user
 
 # VIEWS IMPORTS
-from views import get_single_subscription, get_all_subscriptions, get_all_comments, get_single_comment, delete_comment, update_comment, create_comment, create_subscription, delete_subscriber, update_subscriptions
+from views import get_single_subscription, get_all_subscriptions, get_all_comments, get_single_comment, delete_comment, update_comment, create_comment, create_subscription, get_all_posts, get_single_post, create_post, delete_post, update_post, update_subscriptions, delete_subscriber
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -81,6 +81,13 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = get_all_comments()
                     
+            if resource == "posts":
+                if id is not None:
+                    response = get_single_post(id)
+
+                else:
+                    response = get_all_posts()       
+                    
         self.wfile.write(json.dumps(response).encode())
 
 
@@ -110,6 +117,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             new_object = create_subscription(post_body)
         if resource == "comments":
             new_object == create_comment(post_body)
+        if resource == "posts":
+            new_object == create_post(post_body)
 
         # Initialize new oject of whatever type
         new_object = None 
@@ -134,6 +143,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "comments":
             success = update_comment(id, post_body)
+        if resource == "posts":
+            success = update_post(id, post_body)
         
          # Set appropriate headers based on success
         if success:
@@ -155,7 +166,9 @@ class HandleRequests(BaseHTTPRequestHandler):
     # Delete a comment from the list
         if resource == "comments":
             delete_comment(id)
-             
+        if resource == "posts":
+            delete_post(id)
+            
     # Encode the new item and send in response
         self.wfile.write("".encode()) 
 

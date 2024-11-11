@@ -89,6 +89,8 @@ def create_subscription(sub):
 
 
     return sub
+<<<<<<< HEAD
+=======
 
 def delete_subscriber(id):
     with sqlite3.connect("./loaddata.sqlite3") as conn:
@@ -98,6 +100,9 @@ def delete_subscriber(id):
         DELETE FROM Subscriptions
         WHERE id = ?
         """, (id, ))
+<<<<<<< HEAD
+>>>>>>> 2e62a6942131c63217eb62ec60236b5a4bd4c622
+=======
         
 def update_subscriptions (id, new_sub):
     with sqlite3.connect("./loaddata.sqlite3") as conn:
@@ -124,3 +129,4 @@ def update_subscriptions (id, new_sub):
     else:
         # Forces 204 response by main module
         return True
+>>>>>>> 84a20f3ce39773a3e69466afd211a663aaee53cd

@@ -8,4 +8,4 @@ class Post():
     self.publication_date
     self.image_url
     self.content
-    self.approved
+    self.approvedgit 
