@@ -98,3 +98,29 @@ def delete_subscriber(id):
         DELETE FROM Subscriptions
         WHERE id = ?
         """, (id, ))
+        
+def update_subscriptions (id, new_sub):
+    with sqlite3.connect("./loaddata.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        UPDATE Subscriptions
+            SET
+                follower_id = ?,
+                author_id = ?,
+                created_on = ?
+        WHERE id = ?
+        """, (new_sub['follower_id'], new_sub['author_id'],
+              new_sub['created_on'], id, ))
+
+        # Were any rows affected?
+        # Did the client send an `id` that exists?
+        rows_affected = db_cursor.rowcount
+
+    # return value of this function
+    if rows_affected == 0:
+        # Forces 404 response by main module
+        return False
+    else:
+        # Forces 204 response by main module
+        return True

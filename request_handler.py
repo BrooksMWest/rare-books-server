@@ -4,7 +4,7 @@ from urllib.parse import urlparse, parse_qs
 from views.users import create_user, login_user
 
 # VIEWS IMPORTS
-from views import get_single_subscription, get_all_subscriptions, get_all_comments, get_single_comment, delete_comment, update_comment, create_comment, create_subscription, delete_subscriber
+from views import get_single_subscription, get_all_subscriptions, get_all_comments, get_single_comment, delete_comment, update_comment, create_comment, create_subscription, delete_subscriber, update_subscriptions
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -128,6 +128,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     # Initialize success as False by default
         success = False
+        
+        if resource == "Subscriptions":
+            success = update_subscriptions(id, post_body)
 
         if resource == "comments":
             success = update_comment(id, post_body)
