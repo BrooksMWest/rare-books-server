@@ -1,17 +1,10 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from urllib.parse import urlparse, parse_qs
-<<<<<<< HEAD
 from views.user_request import create_user, login_user
 
 # VIEWS IMPORTS
-from views import get_single_subscription, get_all_subscriptions, get_all_comments, get_single_comment, delete_comment, update_comment, create_comment, create_subscription, get_all_posts, get_single_post, create_post, delete_post, update_post
-=======
-from views.users import create_user, login_user
-
-# VIEWS IMPORTS
-from views import get_single_subscription, get_all_subscriptions, get_all_comments, get_single_comment, delete_comment, update_comment, create_comment, create_subscription, delete_subscriber
->>>>>>> 2e62a6942131c63217eb62ec60236b5a4bd4c622
+from views import get_single_subscription, get_all_subscriptions, get_all_comments, get_single_comment, delete_comment, update_comment, create_comment, create_subscription, get_all_posts, get_single_post, create_post, delete_post, update_post,
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -124,11 +117,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             new_object = create_subscription(post_body)
         if resource == "comments":
             new_object == create_comment(post_body)
-<<<<<<< HEAD
         if resource == "posts":
             new_object == create_post(post_body)
-=======
->>>>>>> 2e62a6942131c63217eb62ec60236b5a4bd4c622
 
         # Initialize new oject of whatever type
         new_object = None 
@@ -150,11 +140,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "comments":
             success = update_comment(id, post_body)
-<<<<<<< HEAD
         if resource == "posts":
             success = update_post(id, post_body)
-=======
->>>>>>> 2e62a6942131c63217eb62ec60236b5a4bd4c622
         
          # Set appropriate headers based on success
         if success:
@@ -171,18 +158,14 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
         
         if resource == "Subscriptions":
-            delete_subscriber(id)
+            bscriber(id)
 
     # Delete a comment from the list
         if resource == "comments":
             delete_comment(id)
-<<<<<<< HEAD
         if resource == "posts":
             delete_post(id)
             
-=======
-             
->>>>>>> 2e62a6942131c63217eb62ec60236b5a4bd4c622
     # Encode the new item and send in response
         self.wfile.write("".encode()) 
 
