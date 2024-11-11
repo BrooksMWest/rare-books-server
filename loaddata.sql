@@ -110,7 +110,11 @@ INSERT INTO `Posts` VALUES (null, 13, "Blockchain Beyond Cryptocurrency", "2024-
 INSERT INTO `Posts` VALUES (null, 14, "Mental Health in the Workplace", "2024-09-15", "https://example.com/image14.jpg", "How employers can create a healthy mental environment for their employees.", 1);
 INSERT INTO `Posts` VALUES (null, 15, "Building a Successful Morning Routine", "2024-09-12", "https://example.com/image15.jpg", "How to structure your mornings for maximum productivity and focus.", 1);
 
-
+INSERT INTO `Posts` VALUES (null, 1, "The Evolution of Jazz", "2024-11-01", "https://example.com/image1.jpg", "A deep dive into the history and impact of jazz music.", 1);
+INSERT INTO `Posts` VALUES (null, 2, "Top 10 Must-Read Novels of the Decade", "2024-10-30", "https://example.com/image2.jpg", "A list of the best novels from the past ten years that every book lover should read.", 1);
+INSERT INTO `Posts` VALUES (null, 3, "The Rise of Indie Music", "2024-10-28", "https://example.com/image3.jpg", "How independent artists are shaping the modern music scene.", 1);
+INSERT INTO `Posts` VALUES (null, 4, "Understanding Classical Music", "2024-10-25", "https://example.com/image4.jpg", "A guide to appreciating the beauty and complexity of classical music.", 1);
+INSERT INTO `Posts` VALUES (null, 5, "Books That Will Change Your Life", "2024-10-20", "https://example.com/image5.jpg", "A selection of books that have had a profound impact on readers around the world.", 0);
 
 DELETE FROM `Posts` WHERE `id` IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
 

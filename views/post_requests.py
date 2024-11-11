@@ -143,4 +143,10 @@ def update_post(id, updated_post):
         # Check if any rows were affected
         rows_affected = db_cursor.rowcount
 
-    return rows_affected > 0  # Return True if the post was updated, otherwise False
+  # return value of this function
+    if rows_affected == 0:
+        # Forces 404 response by main module
+        return False
+    else:
+        # Forces 204 response by main module
+        return True
