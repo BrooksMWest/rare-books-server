@@ -93,6 +93,7 @@ INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.c
 
 
 
+<<<<<<< HEAD
 
 INSERT INTO `Posts` VALUES (null, 1, "The Future of AI", "2024-11-01", "https://example.com/image1.jpg", "A deep dive into the future advancements of artificial intelligence.", 1);
 INSERT INTO `Posts` VALUES (null, 2, "Top 10 Healthy Foods", "2024-10-30", "https://example.com/image2.jpg", "An article discussing the top 10 healthiest foods to incorporate into your diet.", 1);
@@ -126,3 +127,18 @@ SELECT
 FROM posts a
 
 SELECT * FROM posts;
+=======
+SELECT
+    a.id,
+    a.follower_id,
+    a.author_id,
+    a.created_on
+FROM Subscriptions a
+
+SELECT
+            a.id,
+            a.author_id,
+            a.post_id,
+            a.content
+        FROM Comments a
+>>>>>>> 2e62a6942131c63217eb62ec60236b5a4bd4c622
