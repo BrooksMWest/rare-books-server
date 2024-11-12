@@ -65,7 +65,7 @@ def get_single_subscription(id):
 
         return subscription.__dict__
     
-def create_subscription(sub):
+def create_subscription(subscription):
     with sqlite3.connect("./loaddata.sqlite3") as conn:
         db_cursor = conn.cursor()
 
@@ -74,8 +74,8 @@ def create_subscription(sub):
             ( follower_id, author_id, created_on )
         VALUES
             ( ?, ?, ?);
-        """, (sub['follower_id'],
-              sub['author_id'], sub['created_on'], ))
+        """, (subscription['follower_id'],
+              subscription['author_id'], subscription['created_on'], ))
 
         # The `lastrowid` property on the cursor will return
         # the primary key of the last thing that got added to
@@ -85,14 +85,12 @@ def create_subscription(sub):
         # Add the `id` property to the animal dictionary that
         # was sent by the client so that the client sees the
         # primary key in the response.
-        sub['id'] = id
+        subscription['id'] = id
 
 
-    return sub
-<<<<<<< HEAD
-=======
+    return subscription
 
-def delete_subscriber(id):
+def delete_subscription(id):
     with sqlite3.connect("./loaddata.sqlite3") as conn:
         db_cursor = conn.cursor()
 
@@ -100,10 +98,7 @@ def delete_subscriber(id):
         DELETE FROM Subscriptions
         WHERE id = ?
         """, (id, ))
-<<<<<<< HEAD
->>>>>>> 2e62a6942131c63217eb62ec60236b5a4bd4c622
-=======
-        
+
 def update_subscriptions (id, new_sub):
     with sqlite3.connect("./loaddata.sqlite3") as conn:
         db_cursor = conn.cursor()
@@ -129,4 +124,3 @@ def update_subscriptions (id, new_sub):
     else:
         # Forces 204 response by main module
         return True
->>>>>>> 84a20f3ce39773a3e69466afd211a663aaee53cd
